@@ -14,6 +14,16 @@ class RoutingPredictor:
         # Fast profile handles validated fixed task schemas (<7ms)
         self.fast_tasks = {'banking77', 'clinc150', 'tool_route', 'dom_action', 'retry', 'risk', 'approval'}
 
+    @classmethod
+    def from_pretrained(cls, repo_id_or_path="Gowtham25/reflex-s1", device='cuda', token=None, **kwargs):
+        p = Path(repo_id_or_path)
+        if not p.exists():
+            from huggingface_hub import snapshot_download
+            p = Path(snapshot_download(repo_id=repo_id_or_path, token=token, **kwargs))
+        fast_path = p / "fast" if (p / "fast").exists() else p
+        general_path = p / "quality" if (p / "quality").exists() else p
+        return cls(fast_checkpoint=str(fast_path), general_checkpoint=str(general_path), device=device)
+
     def predict(self, state, questions, threshold=0.9):
         if not isinstance(questions, dict) or not 1 <= len(questions) <= 32:
             raise ValueError('Require 1..32 questions')

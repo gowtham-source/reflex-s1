@@ -6,6 +6,7 @@
   <img src="https://img.shields.io/badge/Latency-p50_%3C12ms-green?style=for-the-badge&logo=speedtest" alt="Latency p50 < 12ms" />
   <img src="https://img.shields.io/badge/Parameters-23M_--_83M-orange?style=for-the-badge" alt="Parameters 23M - 83M" />
   <img src="https://img.shields.io/badge/License-Apache_2.0-lightgrey?style=for-the-badge" alt="License Apache 2.0" />
+  <a href="https://huggingface.co/Gowtham25/reflex-s1"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Gowtham25%2Freflex--s1-yellow?style=for-the-badge" alt="Hugging Face Gowtham25/reflex-s1" /></a>
 </p>
 
 > **The open-source System 1 decision engine. Non-generative, typed probabilities in <12ms. An open alternative to Jev combining Mixture of Recursions (MoR) and sparse MoE.**
@@ -161,6 +162,51 @@ Tested sequentially on the identical NVIDIA L40S hardware:
 ---
 
 ## 🚀 Quickstart
+
+### 📥 Loading from Hugging Face Hub (Instant Inference)
+
+Pretrained weights and calibrated profiles are hosted on Hugging Face at [**Gowtham25/reflex-s1**](https://huggingface.co/Gowtham25/reflex-s1).
+
+#### 1. Dual-Profile Router (Recommended)
+Automatically routes between the 23M fast profile and the 83M quality profile based on question complexity:
+
+```python
+from s1.router import RoutingPredictor
+from s1.presets import question
+
+# Downloads and caches directly from Hugging Face Hub
+model = RoutingPredictor.from_pretrained("Gowtham25/reflex-s1")
+
+# High-speed categorical inference (<12ms)
+result = model.predict(
+    state="The customer requested a wire transfer of $45,000 to an unverified offshore account.",
+    questions={
+        "claim": question("nli", claim="The transaction complies with standard domestic limits.")
+    }
+)
+print(result["claim"]["distribution"])
+# Output: {'contradiction': 0.941, 'neutral': 0.047, 'entailment': 0.012}
+```
+
+#### 2. Standalone Model Profiles
+You can also load individual specialized model profiles directly:
+
+```python
+from s1.predict import Predictor
+
+# Load the ultra-fast 23M profile (<7ms for intent, tool routing, security)
+fast_model = Predictor.from_pretrained("Gowtham25/reflex-s1", subfolder="fast")
+
+# Load the high-capacity 83M quality profile for deep natural language inference & evidence
+quality_model = Predictor.from_pretrained("Gowtham25/reflex-s1", subfolder="quality")
+```
+
+#### 3. Serving via HTTP Directly from Hugging Face
+Launch the Jev-compatible HTTP server pointing directly to the Hugging Face repository:
+
+```bash
+uv run python -m scripts.serve --router --checkpoint Gowtham25/reflex-s1 --port 8792
+```
 
 ### Installation
 

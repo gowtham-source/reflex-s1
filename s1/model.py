@@ -128,5 +128,10 @@ class DecisionModel(nn.Module):
         import json
         p=Path(directory)
         model=cls(p/'encoder', ModelConfig(**json.loads((p/'config.json').read_text())), pretrained=False)
-        model.load_state_dict(torch.load(p/'model.pt', map_location='cpu', weights_only=True))
+        weights_path = p/'model.safetensors' if (p/'model.safetensors').exists() else p/'model.pt'
+        if str(weights_path).endswith('.safetensors'):
+            from safetensors.torch import load_file
+            model.load_state_dict(load_file(str(weights_path), device='cpu'))
+        else:
+            model.load_state_dict(torch.load(weights_path, map_location='cpu', weights_only=True))
         return model.to(device).eval()

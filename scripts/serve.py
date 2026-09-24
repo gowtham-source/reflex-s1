@@ -14,7 +14,7 @@ def create_app(checkpoint,device='cuda',router=False):
     torch.set_num_threads(4)
     if router:
         from s1.router import RoutingPredictor
-        model=RoutingPredictor(device=device)
+        model=RoutingPredictor.from_pretrained(checkpoint, device=device) if not Path(checkpoint).exists() and '/' in checkpoint else RoutingPredictor(device=device)
     else:model=Predictor(checkpoint,device)
     lock=threading.Lock(); app=FastAPI(title='Reflex-S1 research API')
     @app.get('/health')

@@ -32,14 +32,31 @@ def normalize_question(q):
 class Predictor:
     def __init__(self,checkpoint,device='cuda',cache_size=64):
         self.device=device
+        p=Path(checkpoint)
+        if not p.exists() and not (p/'config.json').exists():
+            from huggingface_hub import snapshot_download
+            checkpoint = snapshot_download(repo_id=str(checkpoint))
+            p=Path(checkpoint)
         self.model=DecisionModel.load(checkpoint,device)
-        self.tokenizer=AutoTokenizer.from_pretrained(Path(checkpoint)/'encoder')
-        path=Path(checkpoint)/'calibration.json'
+        self.tokenizer=AutoTokenizer.from_pretrained(p/'encoder')
+        path=p/'calibration.json'
         self.calibration=json.loads(path.read_text()) if path.exists() else {}
-        digest=hashlib.sha256((Path(checkpoint)/'model.pt').read_bytes()).hexdigest()
-        self.calibration={k:v for k,v in self.calibration.items() if v.get('checkpoint_sha256')==digest}
+        pt_path = p/'model.pt' if (p/'model.pt').exists() else p/'model.safetensors'
+        digest=hashlib.sha256(pt_path.read_bytes()).hexdigest() if pt_path.exists() else ''
+        self.calibration={k:v for k,v in self.calibration.items() if not v.get('checkpoint_sha256') or v.get('checkpoint_sha256')==digest}
         self.checkpoint_sha256=digest
         self.cache=OrderedDict(); self.cache_size=cache_size
+
+    @classmethod
+    def from_pretrained(cls, repo_id_or_path, subfolder=None, device='cuda', token=None, **kwargs):
+        p = Path(repo_id_or_path)
+        if p.exists():
+            target = p / subfolder if subfolder else p
+            return cls(str(target), device=device)
+        from huggingface_hub import snapshot_download
+        cached = snapshot_download(repo_id=repo_id_or_path, token=token, **kwargs)
+        target = Path(cached) / subfolder if subfolder else Path(cached)
+        return cls(str(target), device=device)
 
     @torch.inference_mode()
     def predict(self,state,questions,threshold=.9,force_depth=None):
