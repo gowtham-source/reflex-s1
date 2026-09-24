@@ -6,14 +6,14 @@
   <img src="https://img.shields.io/badge/Latency-p50_%3C12ms-green?style=for-the-badge&logo=speedtest" alt="Latency p50 < 12ms" />
   <img src="https://img.shields.io/badge/Parameters-23M_--_83M-orange?style=for-the-badge" alt="Parameters 23M - 83M" />
   <img src="https://img.shields.io/badge/License-Apache_2.0-lightgrey?style=for-the-badge" alt="License Apache 2.0" />
-  <a href="https://huggingface.co/Gowtham25/reflex-s1"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Gowtham25%2Freflex--s1-yellow?style=for-the-badge" alt="Hugging Face Gowtham25/reflex-s1" /></a>
+  <a href="https://huggingface.co/Gowtham25/reflex-s1"><img src="https://img.shields.io/badge/Hugging%20Face-Gowtham25%2Freflex--s1-yellow?style=for-the-badge" alt="Hugging Face Gowtham25/reflex-s1" /></a>
 </p>
 
 > **The open-source System 1 decision engine. Non-generative, typed probabilities in <12ms. An open alternative to Jev combining Mixture of Recursions (MoR) and sparse MoE.**
 
 ---
 
-## ⚡ The System 1 Paradigm: Why Reflex-S1?
+## The System 1 Paradigm: Why Reflex-S1?
 
 Modern AI agents spend **80% of their execution time and 90% of their inference compute** on low-level binary and categorical choices:
 - *Which tool should be called next?*
@@ -32,7 +32,7 @@ Relying on standard **System 2** generative Large Language Models (LLMs) for the
 
 ---
 
-## 🥊 The Landscape: Reflex-S1 vs. Jev, Open-Jev, and Laya
+## The Landscape: Reflex-S1 vs. Jev, Open-Jev, and Laya
 
 Reflex-S1 addresses the core architectural trade-offs found in contemporary decision models:
 
@@ -59,7 +59,7 @@ Reflex-S1 addresses the core architectural trade-offs found in contemporary deci
 
 ---
 
-## 🏛️ Architecture: Mixture of Recursions & Sparse MoE
+## Architecture: Mixture of Recursions & Sparse MoE
 
 ```
                       ┌───────────────────────────────────────┐
@@ -125,7 +125,7 @@ Reflex-S1 addresses the core architectural trade-offs found in contemporary deci
 
 ---
 
-## 📊 Benchmark Results
+## Benchmark Results
 
 ### 1. 3,000 Tough Multi-Domain Benchmark Report
 Evaluated on **3,000 distinct challenging examples** across 5 distinct domains on an NVIDIA L40S GPU. All latencies reflect complete cold/uncached schema processing with full CUDA synchronization.
@@ -147,9 +147,9 @@ Tested sequentially on the identical NVIDIA L40S hardware:
 
 | Benchmark Task | Laya (149M) Accuracy | Laya Latency | **Reflex-S1 Accuracy** | **Reflex-S1 Latency** | **Speedup** |
 |---|---:|---:|---:|---:|:---:|
-| **BFCL Function Calling (Tool Selection)** | **97.00%** | 23.21 ms | 95.67% | **11.59 ms** | **2.00x faster** ⚡ |
-| **BoolQ Passage Reading Comprehension** | 76.80% | 23.30 ms | 70.80% (80.7% Quality) | **11.19 ms** | **2.08x faster** ⚡ |
-| **Parameter Footprint** | 149M | — | **23.2M** | — | **6.4x smaller** 💾 |
+| **BFCL Function Calling (Tool Selection)** | **97.00%** | 23.21 ms | 95.67% | **11.59 ms** | **2.00x faster** |
+| **BoolQ Passage Reading Comprehension** | 76.80% | 23.30 ms | 70.80% (80.7% Quality) | **11.19 ms** | **2.08x faster** |
+| **Parameter Footprint** | 149M | — | **23.2M** | — | **6.4x smaller** |
 
 ### 3. Public Intent Benchmarks (Standard Splits)
 
@@ -161,9 +161,9 @@ Tested sequentially on the identical NVIDIA L40S hardware:
 
 ---
 
-## 🚀 Quickstart
+## Quickstart
 
-### 📥 Loading from Hugging Face Hub (Instant Inference)
+### Loading from Hugging Face Hub (Instant Inference)
 
 Pretrained weights and calibrated profiles are hosted on Hugging Face at [**Gowtham25/reflex-s1**](https://huggingface.co/Gowtham25/reflex-s1).
 
@@ -276,7 +276,7 @@ Reflex-S1 ships with high-precision, calibrated presets:
 
 ---
 
-## 🌐 High-Performance Serving (Jev-Compatible API)
+## High-Performance Serving (Jev-Compatible API)
 
 Launch the high-throughput HTTP server with the dual-profile router:
 
@@ -328,7 +328,7 @@ curl -X POST http://127.0.0.1:8792/decide \
 
 ---
 
-## 🛡️ Production Safety & Concurrency Isolation
+## Production Safety & Concurrency Isolation
 
 Reflex-S1 was designed for co-existence on production GPU infrastructure:
 - **Strict VRAM Envelope:** Uses a memory fraction ceiling of `0.08` (~3.6 GB allocated on 48GB VRAM cards), making it safe to colocate directly alongside giant generative LLMs (e.g. VLLM Gemma-27B or Qwen-72B).
@@ -337,7 +337,7 @@ Reflex-S1 was designed for co-existence on production GPU infrastructure:
 
 ---
 
-## 🔬 Reproduce Evaluation & Training
+## Reproduce Evaluation & Training
 
 ```bash
 # Run the 3,000 Tough Multi-Domain Benchmark
@@ -352,7 +352,7 @@ uv run pytest -q tests/test_core.py
 
 ---
 
-## 📚 Citation & Acknowledgments
+## Citation & Acknowledgments
 
 Reflex-S1 builds upon and extends conceptual foundations established by the open-source community:
 
@@ -373,6 +373,6 @@ Reflex-S1 builds upon and extends conceptual foundations established by the open
 
 ---
 
-## 📄 License
+## License
 
 Licensed under the **Apache License, Version 2.0**. See [LICENSE](LICENSE) for details.
