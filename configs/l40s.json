@@ -1,0 +1,19 @@
+{
+  "encoder": "sentence-transformers/all-MiniLM-L6-v2",
+  "encoder_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+  "width": 128,
+  "depth": 3,
+  "experts": 4,
+  "top_k": 2,
+  "heads": 4,
+  "max_length": 256,
+  "precision": "BF16 autocast; FP32 parameters and optimizer",
+  "batch_size": 32,
+  "epochs": 5,
+  "encoder_lr": 0.00002,
+  "head_lr": 0.0003,
+  "rl_weight": 0.2,
+  "compute_cost_per_recursion": 0.02,
+  "seed": 42,
+  "note": "Reference configuration matching scripts/train.py defaults; CLI is authoritative."
+}

@@ -1,0 +1,15 @@
+__pycache__/
+.pytest_cache/
+*.egg-info/
+.venv/
+base/
+base-nli/
+baselines/
+data/
+runs/
+*.log
+*.safetensors
+*.pt
+*.bin
+*.zip
+*.tar.gz

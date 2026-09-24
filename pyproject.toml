@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "reflex-s1"
+version = "0.1.0"
+description = "Experimental shared-state MoR + sparse MoE calibrated decision model"
+requires-python = ">=3.10"
+dependencies = [
+    "torch>=2.5",
+    "transformers>=4.48,<6",
+    "numpy>=1.24",
+    "scikit-learn>=1.3",
+    "huggingface-hub>=0.28",
+    "requests>=2.31",
+    "pytest>=9.1.1",
+    "fastapi>=0.141.1",
+    "uvicorn>=0.53.0",
+]
+
+[project.optional-dependencies]
+serve = ["fastapi", "uvicorn"]
+test = ["pytest", "httpx"]
+benchmark = ["pyarrow"]
+
+[tool.setuptools.packages.find]
+include = ["s1*"]
+
+[tool.setuptools.package-data]
+s1 = ["schemas.json"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

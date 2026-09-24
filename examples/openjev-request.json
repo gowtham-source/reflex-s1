@@ -1,0 +1,13 @@
+{
+  "state": "{\"status\":\"success\",\"required\":\"receipt\",\"receipt\":null,\"message\":\"The payment was rejected.\"}",
+  "questions": {
+    "silent_failure": {
+      "type": "noul",
+      "instructions": "Does this response body show that the current operation failed or did not deliver its stated required result? Judge only the body. Maintenance or a sign-in page replacing the requested result counts as failure, even when a field claims success. A valid empty result, explicitly accepted asynchronous work, allowed partial data, quoted error text, or an earlier incident that has recovered does not by itself count.",
+      "criteria": {
+        "false": "no",
+        "true": "yes"
+      }
+    }
+  }
+}
